@@ -1,0 +1,54 @@
+#register-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f0f0f5;
+}
+
+#register-form {
+    padding: 40px;
+    border: 2px solid #ffffff;
+    border-radius: 8px;
+}
+
+#register-form__header {
+    font-weight: bold;
+    color: #36404a;
+    text-align: center;
+}
+
+#register-form__name {
+    margin: 16px 8px;
+}
+
+.register-form__input {
+    padding: 4px;
+    border: none;
+    border-radius: 8px;
+    height: 24px;
+    outline: none;
+}
+
+#register-form__email {
+    margin: 16px 8px;
+}
+
+#register-form__password {
+    margin: 16px 8px;
+}
+
+#register-form__submit {
+    margin: 16px 8px;
+    display: flex;
+    justify-content: center;
+}
+
+#register-form__submit__btn {
+    padding: 8px;
+    width: 100%;
+    border: none;
+    border-radius: 8px;
+    color: #ffffff;
+    background-color: #505564;
+}
