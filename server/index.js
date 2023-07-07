@@ -25,6 +25,21 @@ app.post('/api/register', async (req, res) => {
     }
 })
 
+app.post('/api/login', async (req, res) => {
+
+    const isUserExists = await Users.findOne({
+        email: req.body.email,
+        password: req.body.password,
+    })
+
+    if(isUserExists) {
+        return res.json({ status: true })
+    } else {
+        return res.json({ status: false })
+    }
+
+})
+
 app.listen(process.env.SERVER_PORT, () => {
     console.log(`Server started on ${process.env.SERVER_PORT}`)
 })
