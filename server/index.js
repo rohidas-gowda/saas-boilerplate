@@ -3,6 +3,8 @@ const app = express()
 const cors = require('cors')
 const dotenv = require('dotenv')
 const mongoose = require('mongoose')
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const Users = require('./models/user.model')
 
 dotenv.config()
@@ -14,10 +16,12 @@ app.use(express.json())
 
 app.post('/api/register', async (req, res) => {
     try {
+        const hashedPassword = await bcrypt.hash(req.body.password, 10);
+
         await Users.create({
             name: req.body.name,
             email: req.body.email,
-            password: req.body.password,
+            password: hashedPassword,
         })
         res.json({ status: true })
     } catch (error) {
@@ -26,18 +30,20 @@ app.post('/api/register', async (req, res) => {
 })
 
 app.post('/api/login', async (req, res) => {
-
-    const isUserExists = await Users.findOne({
-        email: req.body.email,
-        password: req.body.password,
-    })
-
-    if(isUserExists) {
-        return res.json({ status: true })
-    } else {
-        return res.json({ status: false })
+    const user = await Users.findOne({ email: req.body.email });
+    try {
+        const match = await bcrypt.compare(req.body.password, user.password);
+        const accessToken = jwt.sign(JSON.stringify(user), process.env.JSONWEBTOKENS_SECRET)
+        
+        
+        if(match){
+            res.json({ status: true, accessToken: accessToken });
+        } else {
+            res.json({ status: false, message: "Invalid Credentials" });
+        }
+    } catch (error) {
+        res.json({ message: error })
     }
-
 })
 
 app.listen(process.env.SERVER_PORT, () => {
